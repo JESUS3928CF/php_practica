@@ -1,18 +1,20 @@
-<?php 
+<?php
+
+require_once("conexion.php");
 
 /* Heredamos de la conexion */
-class crud extends Conexion{
-
+class Crud extends Conexion {
+    
     private $pdo;
-    public function __construct(public string $tabla)
-    {
+    public function __construct(public string $tabla) {
+        /* Ejecutar el constructor padre para iniciar la clase */
+        parent::__construct();
         $this->pdo = $this->conexion();
     }
 
+    /* Comenzamos a crear nuestro CRUD */
 
-    /* Comensamos a crear nuestro crud */
-
-    public function consultarTodo(){
+    public function consultarTodo() {
         try {
             /* Preparar consulta */
             $stm = $this->pdo->prepare("SELECT * FROM $this->tabla");
@@ -27,14 +29,13 @@ class crud extends Conexion{
         }
     }
 
-
-    public function consultarUno(int $id){
+    public function consultarUno(int $id) {
         try {
             /* Preparar consulta */
-            $stm = $this->pdo->prepare("SELECT * FROM $this->tabla WHERE id = $id");
+            $stm = $this->pdo->prepare("SELECT * FROM $this->tabla WHERE id = ?");
 
             /* Ejecutar consulta */
-            $stm->execute();
+            $stm->execute([$id]);
 
             /* Obtener un dato */
             return $stm->fetch(PDO::FETCH_OBJ);
@@ -43,49 +44,44 @@ class crud extends Conexion{
         }
     }
 
-    /*1.0 MANEJAR LA INYECIÓN DE DATOS */
-    public function delete(int $id){
+    /* Manejar la inyección de datos */
+    public function delete(int $id) {
         try {
             /* Preparar consulta */
-            $stm = $this->pdo->prepare("DELETE * FROM $this->tabla WHERE id = ?"); /*1.1  canbiar la variable por ? donde este el ? es 
-            por que va un dato*/
+            $stm = $this->pdo->prepare("DELETE FROM $this->tabla WHERE id = ?");
 
             /* Ejecutar consulta */
-            $stm->execute([$id]); /* Atraves del areglo el verifica que no haya codigo malicioso */
-
+            $stm->execute([$id]);
         } catch (PDOException $mensaje) {
             echo $mensaje->getMessage();
         }
     }
 
-    /*Crear datos de foa dinamica para cualquier tabla*/
-    public function crear(string $columnas,string $marcadores,array $datos){
+    /* Crear datos de forma dinámica para cualquier tabla */
+    public function crear(string $columnas, string $marcadores, array $datos) {
         try {
-            /* Preparar consulta, de forma dinamica para insertar en cualquier tabla */
-            $stm = $this->pdo->prepare("INSERT INTO $this->tabla WHERE $columnas VALUES $marcadores"); 
+            /* Preparar consulta, de forma dinámica para insertar en cualquier tabla */
+            $stm = $this->pdo->prepare("INSERT INTO $this->tabla ($columnas) VALUES ($marcadores)");
 
             /* Ejecutar consulta */
             $stm->execute($datos);
-
         } catch (PDOException $mensaje) {
             echo $mensaje->getMessage();
         }
     }
 
-    /*Crear datos de foa dinamica para cualquier tabla*/
-    public function modificacion(string $columnas, $datos){
+    /* Modificación de datos de forma dinámica para cualquier tabla */
+    public function modificacion(string $columnas, array $datos) {
         try {
-            /* Preparar consulta, de forma dinamica para insertar en cualquier tabla */
-            $stm = $this->pdo->prepare("UPDATE INTO $this->tabla WHERE $columnas"); 
+            /* Preparar consulta, de forma dinámica para actualizar en cualquier tabla */
+            $stm = $this->pdo->prepare("UPDATE $this->tabla SET $columnas WHERE id = ?");
 
             /* Ejecutar consulta */
             $stm->execute($datos);
-
         } catch (PDOException $mensaje) {
             echo $mensaje->getMessage();
         }
     }
-
 }
 
 ?>
