@@ -12,5 +12,5 @@ $usuario = new Usuario(
  */
 /*  Llamar el metodo para actualizar */
 
-$usuario->insertar();
+$usuario->actualizar();
 ?> 
