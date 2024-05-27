@@ -18,7 +18,13 @@ require_once("crud.php");
         /* insertar usuario */
 
         public function insertar(){
-            $this-> crear("id,nombre,apellido,telefono,edad", "?,?,?,?,?", [$this->id, $this->nombre, $this->apellido, $this->telefono, $this->edad]);
+            $this-> crear("id,nombre,apellido,telefono,edad", "?,?,?,?,?", [$this->id, $this->nombre, $this->apellido, $this->telefono,
+             $this->edad]);
+        }
+
+        public function actualizar(){
+            $this->modificacion("id=?,nombre=?,apellido=?,telefono=?,edad=?", [$this->id, $this->nombre, $this->apellido, 
+            $this->telefono, $this->edad]);
         }
 
     }
