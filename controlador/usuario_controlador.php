@@ -1,6 +1,8 @@
 <?php 
 
-require_once("../modelo/usuario.php");
+/* Se busca la ruta como si estuviesemos en el index ose no hay que salir hay que entrar por que esto se ejecuta desde el 
+controlador que esta en el index */
+require_once("modelo/usuario.php");
 
 /* Heredamos del modelo para tener acceso a el */
 class UsuarioControlador extends Usuario {
@@ -13,7 +15,7 @@ class UsuarioControlador extends Usuario {
 
     /* Crear un metodo para nuestro diseño, lo que hara es redireccionar a la pagina pricipal de usuario que es el listar usurio */
     public function indexUsuario(){
-        require_once("../vista/usuarios.php"); /* Manda a la tabla usuario */
+        require_once("vista/usuarios.php"); /* Manda a la tabla usuario */
     }
 
     /* Mostrar los datos del usuario */
@@ -26,7 +28,7 @@ class UsuarioControlador extends Usuario {
         }
 
         /* Redireccionar */
-        require_once("../vista/usuario_formulario.php");
+        require_once("vista/usuario_formulario.php");
 
         /* Aun no usa el usuario */
     }

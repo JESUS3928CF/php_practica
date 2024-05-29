@@ -8,8 +8,8 @@
 <body>
     <table>
 
-        <!--- Lo que hacemos aca es recorrer un array con las colunnas de nuestra tabla -->
-        <tr> <?php require_once("../core/constantes.php");
+        <!--- de cambia la ruta-->
+        <tr> <?php require_once("core/constantes.php");
 
             foreach(usuarioColumns as $value):?> <!-- Los dos puntos: es para que no se termine el foreach aun -->
 

@@ -1,47 +1,24 @@
-<?php 
-/* Asi importamos de un archivo de nivel mas bajo */
-require_once("./modelo/usuario.php");
+<?php
 
-/* Incluir la clase de Animal */
-require_once("./modelo/animal.php");
+/* al iniciar no tendremos ningua accion ni controlador para saber que hacer al inicio lo siguiente */
+if (!isset($_REQUEST["controlador"])) {
+    
+    /* Por defecto decidiremos que lo mandaremos a la vista de usuario */
+    require_once("controlador/usuario_controlador.php");
 
-/* Incluir la clase de Adopcion */
-require_once("./modelo/adopcion.php");
+    $controlador = new UsuarioControlador(); //- Instancia del controlador
+    $controlador->indexUsuario();
 
+} else {
+    $controlador = $_REQUEST["controlador"];
+    $accion = $_REQUEST["accion"]; /* Esta es la accion que resiviremos por ejemplo eliminar, en la 12 la ejecutamos */
 
-$usuario = new Usuario(
-    2, "Jesus", "Castallo", "323121212", 26
-);
+    require_once("controllar/$controlador" . "_controlador.php");
 
-$animal = new Animal(
-    0, "Vaca", "Tinto Puro", "Hembra", 4
-);
+    $controlador = ucwords($controlador) . "Controlador";
 
-$adopcion = new Adopcion(
-    0, 1, 2, "29/05/2024", "Jesus adopta a Vaca para matarla y hacer asado"
-);
+    $controlador = new $controlador;
 
-
-
-$usuario->insertar(); 
-
-$animal->insertar();
-
-$adopcion->insertar();
-
-?> 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1> Insertar </h1>
-    <p> Una persona </p>
-    <p> Una vaca</p>
-    <p> Una adopcion</p>
-</body>
-</html>
+    /* Esto nos sercira para ejecutar funciones */
+    call_user_func([$controlador, $accion]);
+}
